@@ -1,12 +1,12 @@
 from odoo import models, fields, api
-import datetime
+from datetime import datetime
 
 
 class CrmLead(models.Model):
-    """Herança do CRM para adicionar automatismo de etiqueta semanal.
+    """Herança do CRM para adicionar automatismo de etiqueta com timestamp.
     
-    Quando um lead entra no estágio 'Qualificado', uma tag W/<semana> é 
-    automaticamente criada (se não existir já) e adicionada ao campo 
+    Quando um lead entra no estágio 'Qualificado', uma tag com a data/hora exacta
+    é automaticamente criada (se não existir já) e adicionada ao campo 
     'tag_ids' (Etiquetas) do Odoo nativo.
     """
     _inherit = 'crm.lead'
@@ -24,19 +24,20 @@ class CrmLead(models.Model):
         return res
 
     def _assign_tag_if_qualified(self):
-        """Atribui a tag/etiqueta da semana atual quando o lead entra no estágio qualificado.
+        """Atribui a tag/etiqueta com o minuto actual quando o lead entra no estágio qualificado.
 
         O nome do estágio pode estar em português ('Qualificado') ou inglês ('Qualified').
+        A tag é criada com o formato 'W/<minuto>': 'W/00' a 'W/59'
         Usa o modelo nativo 'crm.tag' e adiciona a tag ao campo 'tag_ids' do lead.
         """
         for lead in self:
             if lead.stage_id:
                 name = (lead.stage_id.name or '').strip().lower()
                 if name in ('qualificado', 'qualified'):
-                    # compute week number based on today's date
-                    today = fields.Date.context_today(self)
-                    week = today.isocalendar()[1]
-                    tag_name = f"W/{week}"
+                    # obter minuto actual
+                    now = datetime.now()
+                    minute = now.minute
+                    tag_name = f"W/{minute}"
 
                     # procura ou cria a tag no modelo crm.tag
                     tag = self.env['crm.tag'].search([('name', '=', tag_name)], limit=1)
