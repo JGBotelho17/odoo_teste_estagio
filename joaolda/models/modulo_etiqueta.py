@@ -3,12 +3,6 @@ from datetime import datetime
 
 
 class CrmLead(models.Model):
-    """Herança do CRM para adicionar automatismo de etiqueta com timestamp.
-    
-    Quando um lead entra no estágio 'Qualificado', uma tag com a data/hora exacta
-    é automaticamente criada (se não existir já) e adicionada ao campo 
-    'tag_ids' (Etiquetas) do Odoo nativo.
-    """
     _inherit = 'crm.lead'
 
     @api.model
@@ -24,12 +18,7 @@ class CrmLead(models.Model):
         return res
 
     def _assign_tag_if_qualified(self):
-        """Atribui a tag/etiqueta com o minuto actual quando o lead entra no estágio qualificado.
-
-        O nome do estágio pode estar em português ('Qualificado') ou inglês ('Qualified').
-        A tag é criada com o formato 'W/<minuto>': 'W/00' a 'W/59'
-        Usa o modelo nativo 'crm.tag' e adiciona a tag ao campo 'tag_ids' do lead.
-        """
+      
         for lead in self:
             if lead.stage_id:
                 name = (lead.stage_id.name or '').strip().lower()
