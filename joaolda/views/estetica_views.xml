@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="crm_lead_view_kanban_solar_colors" model="ir.ui.view">
+        <field name="name">crm.lead.kanban.solar.colors</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_kanban_view_leads"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='probability']" position="after">
+                <field name="poupanca_cor"/>
+                <field name="poupanca_anual_estimada"/>
+            </xpath>
+
+            <xpath expr="//t[@t-name='card']" position="after">
+                <div t-if="record.poupanca_cor.raw_value == 'alta'" 
+                     style="background-color: #28a745; height: 10px; width: 100%; margin-bottom: 5px; border-radius: 4px; border: 1px solid #1e7e34;" 
+                     title="Alta Rentabilidade"/>
+                
+                <div t-if="record.poupanca_cor.raw_value == 'media'" 
+                     style="background-color: #ffc107; height: 10px; width: 100%; margin-bottom: 5px; border-radius: 4px; border: 1px solid #d39e00;" 
+                     title="Média Rentabilidade"/>
+            </xpath>
+
+            <xpath expr="//field[@name='tag_ids']" position="after">
+                <div t-if="record.poupanca_anual_estimada.raw_value > 0" class="fw-bold mt-1">
+                    <i class="fa fa-sun-o"/> Poupança: 
+                    <span t-attf-class="#{record.poupanca_cor.raw_value == 'alta' ? 'text-success' : (record.poupanca_cor.raw_value == 'media' ? 'text-warning' : 'text-danger')}">
+                        <field name="poupanca_anual_estimada"/>€/ano
+                    </span>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

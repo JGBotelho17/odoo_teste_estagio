@@ -1,56 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="view_joaolda_painel_tree" model="ir.ui.view">
-        <field name="name">joaolda.painel.tree</field>
-        <field name="model">joaolda.painel</field>
+    <record id="crm_lead_view_form_solar_helper" model="ir.ui.view">
+        <field name="name">crm.lead.form.solar.helper</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
         <field name="arch" type="xml">
-            <list string="Painéis Solares">
-                <field name="name"/>
-                <field name="marca"/>
-                <field name="potencia_watts"/>
-                <field name="preco_custo"/>
-            </list>
-        </field>
-    </record>
-
-    <record id="view_joaolda_painel_form" model="ir.ui.view">
-        <field name="name">joaolda.painel.form</field>
-        <field name="model">joaolda.painel</field>
-        <field name="arch" type="xml">
-            <form string="Painel Solar">
-                <sheet>
+            <xpath expr="//notebook" position="inside">
+                <page string="Estudo Solar JoaoLda" name="solar_study">
                     <group>
-                        <group>
-                            <field name="name"/>
-                            <field name="marca"/>
+                        <group string="Dados de Entrada">
+                            <field name="telhado_m2"/>
+                            <field name="consumo_mensal_kwh"/>
+                            <field name="orientacao"/>
                         </group>
-                        <group>
-                            <field name="potencia_watts"/>
-                            <field name="preco_custo"/>
-                            <field name="garantia_anos"/>
-                        </group>
-                        <group>
-                            <field name="preco_custo"/>
-                            <field name="preco_venda_sem_iva" readonly="1"/>
-                            <field name="preco_venda_com_iva" readonly="1"/>
+                        <group string="Estimativas Técnicas">
+                            <field name="paineis_estimados" readonly="1"/>
+                            <field name="potencia_instalada_kwp" readonly="1"/>
+                            <field name="poupanca_anual_estimada" readonly="1"/>
                         </group>
                     </group>
-                    <notebook>
-                        <page string="Notas">
-                            <field name="notas"/>
-                        </page>
-                    </notebook>
-                </sheet>
-            </form>
+                </page>
+            </xpath>
         </field>
     </record>
-
-    <record id="action_joaolda_painel" model="ir.actions.act_window">
-        <field name="name">Painéis Solares</field>
-        <field name="res_model">joaolda.painel</field>
-        <field name="view_mode">list,form</field>
-    </record>
-
-    <menuitem id="menu_joaolda_root" name="JoaoLda Soluções" web_icon="base,static/description/icon.png"/>
-    <menuitem id="menu_joaolda_paineis" name="Painéis Solares" parent="menu_joaolda_root" action="action_joaolda_painel"/>
 </odoo>

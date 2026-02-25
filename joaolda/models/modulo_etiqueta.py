@@ -23,12 +23,12 @@ class CrmLead(models.Model):
             if lead.stage_id:
                 name = (lead.stage_id.name or '').strip().lower()
                 if name in ('qualificado', 'qualified'):
-                    # obter minuto actual
+                    # obtem minuto actual
                     now = datetime.now()
                     minute = now.minute
                     tag_name = f"W/{minute}"
 
-                    # procura ou cria a tag no modelo crm.tag
+                    # procura ou cria a etiqueta no modelo crm.tag
                     tag = self.env['crm.tag'].search([('name', '=', tag_name)], limit=1)
                     if not tag:
                         tag = self.env['crm.tag'].create({'name': tag_name})
