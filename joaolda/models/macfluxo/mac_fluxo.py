@@ -8,11 +8,6 @@ class MacFluxo(models.Model):
 
     name = fields.Char(string='Descricao do Registo', required=True, tracking=True)
     partner_id = fields.Many2one('res.partner', string='Parceiro Relacionado', tracking=True)
-    x_studio_ca = fields.Many2one(
-        'account.analytic.account',
-        string='Conta Analitica Principal',
-        ondelete='set null',
-    )
 
     line_ids = fields.One2many(
         'account.analytic.line',

@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <delete id="view_mac_fluxo_tree" model="ir.ui.view"/>
+    <delete id="view_mac_fluxo_form" model="ir.ui.view"/>
+    <delete id="action_mac_conta_analitica_principal" model="ir.actions.act_window"/>
+    <delete id="menu_mac_conta_analitica_principal_child" model="ir.ui.menu"/>
 
     <record id="view_mac_analytic_line_tree" model="ir.ui.view">
         <field name="name">account.analytic.line.mac.tree</field>
@@ -45,6 +49,28 @@
                         <field name="mac_expected_date" string="Data esperada"/>
                     </group>
                     <notebook>
+                        <page string="Linhas Analiticas">
+                            <field name="x_studio_analytic_line" readonly="1" context="{'form_view_ref': 'joaolda.view_mac_analytic_line_studio_form'}">
+                                <list create="0" delete="0">
+                                    <field name="x_name" string="Nome"/>
+                                    <field name="x_studio_cliente" string="Cliente"/>
+                                    <field name="x_studio_linha_analitica" string="Linha analitica"/>
+                                    <field name="x_studio_quantidade" string="Quantidade"/>
+                                    <field name="x_studio_quantidade_esperada" string="Quantidade esperada"/>
+                                    <field name="x_studio_parceiro" string="Parceiro"/>
+                                    <field name="x_studio_currency_1" string="Currency"/>
+                                    <field name="x_studio_valor" string="Valor"/>
+                                    <field name="x_studio_valor_esperado" string="Valor esperado"/>
+                                    <field name="x_studio_estado_do_pagamento" string="Estado do pagamento"/>
+                                    <field name="x_studio_conta_analitica" string="Conta analitica"/>
+                                    <field name="x_studio_data_final_do_pagamento" string="Data final do pagamento"/>
+                                    <field name="x_studio_balano" string="Balanco"/>
+                                    <field name="x_studio_data" string="Data criacao"/>
+                                    <field name="x_studio_data_vencimento_final" string="Data vencimento final"/>
+                                    <field name="x_studio_data_esperada" string="Data esperada"/>
+                                </list>
+                            </field>
+                        </page>
                         <page string="Lista de BOM">
                             <field name="x_studio_bom_1" readonly="1">
                                 <list create="0" delete="0">
@@ -71,8 +97,41 @@
         </field>
     </record>
 
+    <record id="view_mac_analytic_line_studio_form" model="ir.ui.view">
+        <field name="name">account.analytic.line.mac.studio.form</field>
+        <field name="model">account.analytic.line</field>
+        <field name="arch" type="xml">
+            <form create="0" delete="0">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="x_name" nolabel="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="x_studio_cliente" string="Cliente"/>
+                        <field name="x_studio_linha_analitica" string="Linha analitica"/>
+                        <field name="x_studio_quantidade" string="Quantidade"/>
+                        <field name="x_studio_quantidade_esperada" string="Quantidade esperada"/>
+                        <field name="x_studio_parceiro" string="Parceiro"/>
+                        <field name="x_studio_currency_1" string="Currency"/>
+                        <field name="x_studio_valor" string="Valor"/>
+                        <field name="x_studio_valor_esperado" string="Valor esperado"/>
+                        <field name="x_studio_estado_do_pagamento" string="Estado do pagamento"/>
+                        <field name="x_studio_conta_analitica" string="Conta analitica"/>
+                        <field name="x_studio_data_final_do_pagamento" string="Data final do pagamento"/>
+                        <field name="x_studio_balano" string="Balanco" readonly="1"/>
+                        <field name="x_studio_data" string="Data criacao" readonly="1"/>
+                        <field name="x_studio_data_vencimento_final" string="Data vencimento final"/>
+                        <field name="x_studio_data_esperada" string="Data esperada"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
     <record id="action_mac_analitica" model="ir.actions.act_window">
-        <field name="name">Registos Analiticos</field>
+        <field name="name">Linhas Analitica\s</field>
         <field name="res_model">account.analytic.line</field>
         <field name="view_mode">list,form</field>
         <field name="context">{'create': 0}</field>
@@ -81,55 +140,10 @@
             (0, 0, {'view_mode': 'form', 'view_id': ref('view_mac_analytic_line_form')})]"/>
     </record>
 
-    <record id="view_mac_fluxo_tree" model="ir.ui.view">
-        <field name="name">mac.analitica.principal.tree</field>
-        <field name="model">mac.analitica</field>
-        <field name="arch" type="xml">
-            <list string="Conta Analitica Principal">
-                <field name="name"/>
-                <field name="partner_id"/>
-                <field name="x_studio_ca" string="Conta Analitica Principal"/>
-            </list>
-        </field>
-    </record>
-
-    <record id="view_mac_fluxo_form" model="ir.ui.view">
-        <field name="name">mac.analitica.principal.form</field>
-        <field name="model">mac.analitica</field>
-        <field name="arch" type="xml">
-            <form>
-                <sheet>
-                    <group>
-                        <field name="name"/>
-                        <field name="partner_id"/>
-                        <field name="x_studio_ca" string="Conta Analitica Principal"/>
-                    </group>
-                    <group string="BOMs Relacionados">
-                        <field name="x_studio_bom_1" readonly="1"/>
-                    </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
-
-    <record id="action_mac_conta_analitica_principal" model="ir.actions.act_window">
-        <field name="name">Conta Analitica Principal</field>
-        <field name="res_model">mac.analitica</field>
-        <field name="view_mode">list,form</field>
-        <field name="view_ids" eval="[(5, 0, 0),
-            (0, 0, {'view_mode': 'list', 'view_id': ref('view_mac_fluxo_tree')}),
-            (0, 0, {'view_mode': 'form', 'view_id': ref('view_mac_fluxo_form')})]"/>
-    </record>
-
     <menuitem id="menu_mac_root" name="Mac Operacoes" sequence="10"/>
     <menuitem id="menu_mac_analitica_child"
               name="Registos Analiticos"
               parent="menu_mac_root"
               action="action_mac_analitica"
               sequence="10"/>
-    <menuitem id="menu_mac_conta_analitica_principal_child"
-              name="Conta Analitica Principal"
-              parent="menu_mac_root"
-              action="action_mac_conta_analitica_principal"
-              sequence="20"/>
 </odoo>
