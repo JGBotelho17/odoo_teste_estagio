@@ -1,5 +1,5 @@
 {
-    'name': 'Gestão de Painéis Solares - JoaoLda',
+    'name': 'JoaoLda',
     'version': '1.0',
     'category': 'Sales',
     'author': 'Joao Botelho',
@@ -10,7 +10,7 @@
         'views/paineis_views.xml',
         'views/etiqueta_views.xml',
         'views/estetica_views.xml',
-        'views/teste_flow_views.xml',
+        'views/mac_fluxo_views.xml',
     ],
     'installable': True,
     'application': True,
